@@ -1,0 +1,61 @@
+<!-- wp:html -->
+<style>.mitsune-conoha-guide{line-height:1.95;overflow-wrap:anywhere;color:#243347}.mitsune-conoha-guide h2{scroll-margin-top:100px;margin-top:2.4em}.mitsune-conoha-guide h3{margin-top:1.8em}.mitsune-conoha-guide figure{margin:28px 0}.mitsune-conoha-guide figure img{display:block;max-width:100%;height:auto;border:1px solid #dce5ee;border-radius:8px;box-sizing:border-box}.mitsune-conoha-guide figcaption,.mitsune-conoha-guide .cg-note{font-size:13px;color:#526277}.mitsune-conoha-guide .cg-disclosure{font-size:14px;color:#46566a;border-left:3px solid #08acd7;padding-left:12px}.mitsune-conoha-guide .cg-callout,.mitsune-conoha-guide nav,.mitsune-conoha-guide .cg-affiliate{background:#f1faff;border:1px solid #c8eaf4;border-radius:10px;padding:18px 22px;margin:24px 0}.mitsune-conoha-guide .cg-table{overflow-x:auto}.mitsune-conoha-guide table{border-collapse:collapse;width:100%;font-size:14px}.mitsune-conoha-guide th,.mitsune-conoha-guide td{border:1px solid #cbdbe6;padding:12px;text-align:left}.mitsune-conoha-guide th{background:#eff7fb}.mitsune-conoha-guide pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f2f6f9;padding:18px;border-radius:8px}.mitsune-conoha-guide a{color:#087aaa}.mitsune-conoha-guide a:focus-visible{outline:3px solid #0ba9d1;outline-offset:3px}.mitsune-conoha-guide .cg-affiliate>img{width:1px;height:1px}.mitsune-conoha-guide caption{text-align:left;font-weight:700;padding:8px 0}@media(max-width:600px){.mitsune-conoha-guide .cg-callout,.mitsune-conoha-guide nav,.mitsune-conoha-guide .cg-affiliate{padding:14px}.mitsune-conoha-guide th,.mitsune-conoha-guide td{padding:8px;min-width:70px}}.mitsune-conoha-guide pre,.mitsune-conoha-guide pre code{color:#243347!important;background:#f2f6f9!important}.mitsune-conoha-guide pre code{padding:0;border:0;white-space:inherit}.mitsune-conoha-guide .cg-banner{margin-top:20px;max-width:100%;position:relative;line-height:0}.mitsune-conoha-guide .cg-banner a{display:block}.mitsune-conoha-guide .cg-banner a img{display:block;width:728px;max-width:100%;height:auto}.mitsune-conoha-guide .cg-banner>img{position:absolute;width:1px;height:1px}body .mitsune-conoha-wide,body .mitsune-conoha-guide .cg-banner{max-width:100%;margin:24px auto;text-align:center;position:relative;line-height:1.5}body .mitsune-conoha-wide a,body .mitsune-conoha-guide .cg-banner a{display:block;width:728px;max-width:100%;margin:0 auto;line-height:0}body .mitsune-conoha-wide a img,body .mitsune-conoha-guide .cg-banner a img{display:block;width:728px;max-width:100%;height:auto;margin:0 auto}body .mitsune-conoha-wide>img,body .mitsune-conoha-guide .cg-banner>img{position:absolute;width:1px;height:1px}body .mitsune-conoha-wide .mitsune-conoha-wide-label,body .cg-banner .mitsune-conoha-wide-label{font-size:12px;color:#64748b;margin:0 0 8px;text-align:center}</style>
+<div class="mitsune-conoha-guide">
+<p class="cg-disclosure">広告：この記事にはConoHa AI Canvasのアフィリエイトリンクが含まれます。</p>
+<p>「Stable Diffusionを使いたいけれど、PCの性能やインストールが気になる」。そんなときの選択肢が、ブラウザから使う<strong>ConoHa AI Canvas</strong>です。画像生成の処理はクラウド側で行うため、自分のPCに画像生成用の高性能GPUを用意する必要はありません。</p>
+<p>この記事では、申し込み前に知りたい料金の仕組みから、最初の画像を作ってWebUIを終了するまでを紹介します。Mitsuneのプロンプト辞典と組み合わせる使い方もまとめました。</p>
+<p class="cg-note">情報確認日：2026年9月7日。公式情報と公式配布素材をもとにした入門ガイドです。本記事用の実機生成・速度測定は行っていません。掲載画面は公式提供のイメージで、現在の画面と異なる場合があります。</p>
+<figure><img src="https://mitsune-ai.com/wp-content/uploads/2026/09/mitsune-conoha-guide-overview-20260907.jpg" width="744" height="522" alt="ConoHa AI Canvasの画像生成画面イメージ" loading="lazy" decoding="async"><figcaption>ConoHa AI Canvasの画像生成画面イメージ（公式提供素材・画面はイメージ）</figcaption></figure>
+<aside class="cg-callout"><strong>先に押さえる3つのこと</strong><ul><li>PCへの生成環境のインストールを省ける。</li><li>月額基本料金に、無料枠を超えたWebUI利用料金が加わる。</li><li>使い終わったら「WebUI終了」。タブを閉じるだけで済ませない。</li></ul></aside>
+<nav aria-label="この記事の目次"><p><strong>この記事の目次</strong></p><ol><li><a href="#cg-about">ConoHa AI Canvasとは</a></li><li><a href="#cg-price">料金とプランの選び方</a></li><li><a href="#cg-start">申し込みから画像生成まで</a></li><li><a href="#cg-prompts">Mitsuneのプロンプトを使う</a></li><li><a href="#cg-stop">終了操作と使いすぎ対策</a></li><li><a href="#cg-faq">よくある疑問</a></li></ol></nav>
+<h2 id="cg-about">ConoHa AI Canvasとは</h2>
+<p>ConoHa AI Canvasは、Stable Diffusion系のモデルをクラウドで利用できるサービスです。操作画面にはAUTOMATIC1111とComfyUIが用意されています。まずは文字を入力して画像を作る流れを覚えたいなら、フォーム形式のAUTOMATIC1111から検討するとよいでしょう。</p>
+<p>自由度の高さが魅力ですが、「文章を入れれば必ず思いどおりになる」という意味ではありません。絵柄を左右するCheckpoint（モデル）や、画像サイズ、入力する言葉を少しずつ調整する必要があります。<a href="https://ai.conoha.jp/canvas/">サービス概要（公式）</a></p>
+<h3>こんな人に向いている</h3>
+<ul><li>今のPCを使い、生成用GPUの購入をひとまず避けたい。</li><li>環境構築より、プロンプトやモデルの違いを試すことに時間を使いたい。</li><li>Mitsuneの服装・背景・画風の語句を、実際の生成画面で組み合わせたい。</li></ul>
+<h3>申し込み前に考えたいこと</h3>
+<p>完全無料で試すことを優先する人には、有料の月額契約は合わないかもしれません。また、長時間使う人は基本料金だけでなく超過分も含めて比較しましょう。インターネット接続は必要で、生成速度や混雑時の待ち時間について、本記事では実測による保証はしていません。</p>
+<h2 id="cg-price">料金は「月額基本料金＋無料枠を超えた利用分」</h2>
+<p>以下は2026年9月7日確認時点の税込料金です。「無料時間」は有料プランに含まれるWebUI利用枠であり、サービス全体が無料になる意味ではありません。</p>
+<div class="cg-table"><table><caption>ConoHa AI Canvasの料金プラン</caption><thead><tr><th scope="col">プラン</th><th scope="col">月額基本料金</th><th scope="col">月ごとのWebUI無料枠</th><th scope="col">保存容量</th></tr></thead><tbody><tr><th scope="row">エントリー</th><td>1,100円</td><td>10時間</td><td>30GB</td></tr><tr><th scope="row">スタンダード</th><td>4,378円</td><td>50時間</td><td>100GB</td></tr><tr><th scope="row">アドバンス</th><td>9,878円</td><td>100時間</td><td>500GB</td></tr></tbody></table></div>
+<p>無料枠を超えるWebUI利用は<strong>1分6.6円</strong>。画像の枚数ではなく、WebUIを起動している時間を意識することが大切です。無料枠は毎月リセットされます。<a href="https://ai.conoha.jp/canvas/pricing/">料金・課金の仕組み（公式）</a></p>
+<aside class="cg-callout"><strong>超過料金の計算例</strong><p>無料枠を60分超えた場合、6.6円×60分＝396円が基本料金に加わる計算です。エントリーでそれ以外の追加がなければ、1,100円＋396円＝1,496円となります。実際の請求額は利用状況や端数処理で確認してください。</p></aside>
+<p>最初は短時間で操作を覚えるのか、週に何度も使うのかを考えて選びましょう。多くのモデルを保存する場合は容量も判断材料です。プラン変更は申し込みの翌月1日からなので、「今月使いすぎたら、その場で上位プランに変えればよい」とは考えないようにします。<a href="https://ai.conoha.jp/canvas/pricing/">プラン変更の条件（公式）</a></p>
+<h2 id="cg-start">申し込みから最初の画像生成まで</h2>
+<h3>1．プラン・本人確認・支払い設定を済ませる</h3>
+<p>公式の申し込み画面でプランを選び、アカウント情報の入力、電話・SMS認証、支払い設定へ進みます。すでにConoHaアカウントを持っている場合は、管理画面からの申し込みも案内されています。重複してアカウントを作る前に確認してください。<a href="https://ai.conoha.jp/canvas/flow/">申し込みの流れ（公式）</a></p>
+<h3>2．コントロールパネルでWebUIを起動する</h3>
+<p>管理画面の「AI」からAI Canvasの詳細へ進み、「WebUI起動」を選びます。使うWebUIと、その起動時に使う認証情報を設定します。この認証情報はConoHaアカウントのログイン情報とは別です。<a href="https://support.conoha.jp/ac/webui-boot/">WebUIを起動・終了する（公式）</a></p>
+<figure><img src="https://mitsune-ai.com/wp-content/uploads/2026/09/mitsune-conoha-guide-launch-20260907.jpg" width="1205" height="787" alt="ConoHa AI CanvasのダッシュボードとWebUI起動ボタン" loading="lazy" decoding="async"><figcaption>ConoHa AI CanvasのダッシュボードとWebUI起動ボタン（公式提供素材・画面はイメージ）</figcaption></figure>
+<p class="cg-note">上の配布素材には旧画面の容量・日付が含まれます。料金・保存容量は画像ではなく、本記事の料金表と最新の公式料金ページを参照してください。</p>
+<h3>3．AUTOMATIC1111で短い入力から試す</h3>
+<p>起動したら、まずCheckpointと画像生成の入力欄を確認します。最初から大量の語句を入れず、描きたいもの・場所・画風を短く指定して1枚ずつ確認する進め方がおすすめです。モデルや設定を変えると結果も変わるため、気に入った結果では入力文と設定を一緒に記録しておきましょう。</p>
+<p>基本用語がまだ分からない場合は、先に<a href="https://mitsune-ai.com/stable-diffusion-beginner-guide/">Stable Diffusionの入門ガイド</a>でプロンプト・モデル・Seedの役割を整理すると読み進めやすくなります。</p>
+<h2 id="cg-prompts">Mitsuneのプロンプト辞典と組み合わせる</h2>
+<p>辞典の単語は、最初から全部盛りにするためではなく、足りない要素を探すために使います。たとえばカフェの人物を描きたいなら、次の順番で組み立てられます。</p>
+<ol><li>主役を決める：女性、人物なしの室内など。</li><li>服装を1つ選ぶ：白いシャツ、ワンピースなど。</li><li>場所や光を足す：カフェ、窓からの光など。</li><li>生成結果を見て、変更する要素を1つに絞る。</li></ol>
+<p><strong>入力の組み立て例（生成未検証）</strong></p>
+<pre><code>adult woman, white shirt, cafe interior, soft window light, anime illustration</code></pre>
+<p class="cg-note">この入力例は公式作例の再現プロンプトではありません。同じ入力でも使用モデルや設定によって結果は異なります。</p>
+<ul><li><a href="https://mitsune-ai.com/stable-diffusion-clothing-prompts/">服装・衣装から選ぶ</a></li><li><a href="https://mitsune-ai.com/stable-diffusion-background-prompts/">背景・場所から選ぶ</a></li><li><a href="https://mitsune-ai.com/stable-diffusion-style-prompts/">画風・スタイルから選ぶ</a></li><li><a href="https://mitsune-ai.com/stable-diffusion-negative-prompts/">崩れや不要な要素の対策を調べる</a></li></ul>
+<p>プロンプトを考えるだけの時間は、WebUIを終了した状態で辞典を読む、メモに候補をまとめる、と分けると起動時間を管理しやすくなります。</p>
+<h2 id="cg-stop">使い終わったら「WebUI終了」まで確認する</h2>
+<p>画像を保存したら、WebUI上部の「WebUI終了」から確認画面へ進み、終了を実行します。管理画面でも終了状態を確認しましょう。ブラウザのタブを閉じただけでは、終了操作の代わりになりません。<a href="https://support.conoha.jp/ac/webui-boot/">終了手順（公式）</a></p>
+<figure><img src="https://mitsune-ai.com/wp-content/uploads/2026/09/mitsune-conoha-guide-stop-20260907.jpg" width="1205" height="700" alt="ConoHa AI CanvasのWebUI終了ボタンの位置" loading="lazy" decoding="async"><figcaption>ConoHa AI CanvasのWebUI終了ボタンの位置（公式提供素材・画面はイメージ）</figcaption></figure>
+<p>終了忘れへの備えとして、自動終了時間も確認します。公式ガイドでは初期設定は60分。AI Canvasの詳細情報にある自動終了時間の項目から変更できます。自動終了任せにせず、作業が終わった時点で手動終了する習慣を付けると安心です。<a href="https://support.conoha.jp/ac/autotermination/">自動終了時間の設定（公式）</a></p>
+<p class="cg-note">WebUIの終了とサービスの解約は別です。WebUIを止めても月額基本料金の契約は残ります。継続しない場合は、別途解約手順を確認してください。</p>
+<h2 id="cg-faq">よくある疑問</h2>
+<h3>生成できる枚数に上限はある？</h3><p>公式料金ページでは枚数制限なしと案内されています。ただし、時間を無制限に定額で使える意味ではありません。WebUIの無料枠と超過分の料金を確認してください。</p>
+<h3>モデルやLoRAは自由に使える？</h3><p>任意のCheckpointを追加できますが、モデルごとの利用条件や対応環境を確認する必要があります。LoRAの「利用」と、自分の画像を学習させる「作成」は別です。公式のKohya SSによるLoRA学習機能はスタンダード・アドバンスが対象で、エントリーは対象外です。<a href="https://ai.conoha.jp/canvas/specification/">対応機能・仕様（公式）</a></p>
+<h3>作った画像を仕事や販売に使える？</h3><p>契約しているだけで、どの画像でも商用利用できるとは限りません。サービスと使用するモデルなどの利用条件、画像に含まれる第三者の権利を確認してください。公式仕様ページでもモデルによって商用利用条件が異なると案内されています。<a href="https://ai.conoha.jp/canvas/specification/">商用利用に関する注意（公式）</a></p>
+<h3>公式素材の画像と同じものが作れる？</h3><p>見本は仕上がりを知るための参考です。この記事では公式配布の画面素材を使っていますが、その画面に写っている生成画像をMitsuneが再現検証したわけではありません。</p>
+<h2 id="cg-summary">環境構築を省いて、プロンプトを試したい人の選択肢</h2>
+<p>ConoHa AI Canvasは、手元のPCに生成環境を用意する負担を減らし、Stable Diffusionを使い始めたいときの選択肢です。契約前に利用時間と保存容量を考え、開始後は「少ない語句で試す・結果を保存する・WebUIを終了する」の流れを覚えましょう。</p>
+<p>最新の料金・提供機能を確認して、自分の使い方に合うか検討してください。</p>
+
+<div class="cg-banner" aria-label="広告：ConoHa AI Canvas"><p class="mitsune-conoha-wide-label">広告</p><a href="https://px.a8.net/svt/ejp?a8mat=4BC5IX+F3KS36+50+7RXDHT" rel="nofollow">
+<img border="0" width="728" height="90" alt="" src="https://www21.a8.net/svt/bgt?aid=260907513913&wid=001&eno=01&mid=s00000000018047017000&mc=1"></a>
+<img border="0" width="1" height="1" src="https://www14.a8.net/0.gif?a8mat=4BC5IX+F3KS36+50+7RXDHT" alt=""></div>
+<p class="cg-note">画像出典：<a href="https://ai.conoha.jp/canvas/affiliate/material/">ConoHa AI Canvas公式配布素材</a>。公式が紹介記事向けに提供している素材を使用しています。</p>
+</div>
+<!-- /wp:html -->

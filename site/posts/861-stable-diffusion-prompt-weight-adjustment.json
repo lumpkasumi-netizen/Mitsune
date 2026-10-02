@@ -1,0 +1,4 @@
+{
+  "title": "Stable Diffusion（SD）強調・重み・指定の調整｜括弧の使い方と効かないときの直し方",
+  "excerpt": "Stable Diffusionの強調・重みを、丸括弧・数値指定・弱化・範囲指定の例で解説。A1111とComfyUIの書式の違い、CFGやLoRAとの区別、指定が効かないときの整理手順をまとめた基本ガイドです。"
+}

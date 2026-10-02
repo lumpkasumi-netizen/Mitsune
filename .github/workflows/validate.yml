@@ -1,0 +1,17 @@
+name: Validate site source
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - run: python3 scripts/site_sync.py validate
+      - run: python3 -m unittest discover -s tests_portable -v
+      - name: PHP syntax
+        run: find site/theme -name '*.php' -print0 | xargs -0 -n 1 php -l
+      - name: JavaScript syntax
+        run: find site/theme -name '*.js' -print0 | xargs -0 -n 1 node --check
+      - name: Check tracked file boundaries
+        run: python3 scripts/check_repository.py
