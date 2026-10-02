@@ -1,0 +1,66 @@
+name: Deploy production
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: mitsune-production
+  cancel-in-progress: false
+jobs:
+  validate:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - run: python3 scripts/site_sync.py validate
+      - run: python3 -m unittest discover -s tests_portable -v
+      - run: find site/theme -name '*.php' -print0 | xargs -0 -n 1 php -l
+      - run: find site/theme -name '*.js' -print0 | xargs -0 -n 1 node --check
+      - run: python3 scripts/check_repository.py
+  deploy:
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment:
+      name: production
+      url: https://mitsune-ai.com/
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - run: python3 -m pip install -r scripts/requirements.txt
+      - name: Load last verified production state
+        run: |
+          mkdir -p .deploy
+          git fetch origin production-state
+          git show origin/production-state:production.json > .deploy/baseline.json
+      - name: Verify baseline and deploy changed files
+        env:
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_PASSWORD: ${{ secrets.WP_PASSWORD }}
+        run: python3 scripts/auto_deploy.py --state .deploy/baseline.json --output .deploy/production.json --commit "$GITHUB_SHA"
+      - name: Persist verified production state
+        if: ${{ always() && hashFiles('.deploy/production.json') != '' }}
+        run: |
+          git worktree add .deploy/state origin/production-state
+          cp .deploy/production.json .deploy/state/production.json
+          git -C .deploy/state add production.json
+          if ! git -C .deploy/state diff --cached --quiet; then
+            git -C .deploy/state -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m "Record verified production $GITHUB_SHA"
+            git -C .deploy/state push origin HEAD:production-state
+          fi
+      - name: Retain rollback receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-receipts-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .deploy/*/receipt.json
+          include-hidden-files: true
+          if-no-files-found: ignore
+          retention-days: 30

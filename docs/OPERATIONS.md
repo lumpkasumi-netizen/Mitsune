@@ -1,5 +1,7 @@
 # 更新・公開・復旧
 
+**2026-10-02からmainへの変更は自動公開です。** 通常は [自動公開の運用](AUTO_DEPLOY.md) に従ってください。以下のローカル公開は例外時の手順です。現在の公開基準は `production-state:production.json` にあるため、ローカルmanifestの古い基準だけでデプロイしないでください。
+
 ## 認証
 
 GitHub権限だけで編集・PR作成できます。本番更新には別途WordPress権限が必要です。
@@ -48,4 +50,4 @@ python scripts/site_sync.py export --destination .deploy/live-review
 
 ## 範囲外
 
-新規記事作成、削除、非公開化、slug変更、分類変更、画像アップロード、メディア本体の同期、プラグイン設定、広告管理、GitHub Actionsからの自動デプロイは行いません。必要なら別の変更として実装・レビューします。GitHub Actionsには本番の秘密情報を登録していません。
+新規記事作成、削除、非公開化、slug変更、分類変更、画像アップロード、メディア本体の同期、プラグイン設定、広告管理には対応しません。必要なら別の変更として実装・レビューします。GitHub Actionsの本番認証情報はproduction環境のSecretsで管理します。

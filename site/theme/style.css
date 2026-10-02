@@ -1596,3 +1596,5 @@ body .entry-content .mitsune-prompt-table td:nth-child(4){grid-area:copy!importa
 }
 @media(min-width:960px){.site-header .mitsune-menu-toggle{display:none!important}}
 /* mitsune-accessible-mobile-navigation:end */
+
+/* Mitsune production source managed through GitHub Actions. */
