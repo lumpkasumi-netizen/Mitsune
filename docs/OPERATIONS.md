@@ -1,6 +1,6 @@
 # 更新・公開・復旧
 
-**2026-10-02からmainへの変更は自動公開です。** 通常は [自動公開の運用](AUTO_DEPLOY.md) に従ってください。以下のローカル公開は例外時の手順です。現在の公開基準は `production-state:production.json` にあるため、ローカルmanifestの古い基準だけでデプロイしないでください。
+**2026-10-02からmainへの変更は自動公開です。** 通常は [自動公開の運用](AUTO_DEPLOY.md) に従ってください。以下のローカル公開は例外時の手順です。現在の公開基準は サーバーの `~/.mitsune-deploy/production.json` にあるため、ローカルmanifestの古い基準だけでデプロイしないでください。
 
 ## 認証
 
@@ -28,7 +28,7 @@ python scripts/site_sync.py deploy --only posts/42 --apply
 
 公開前に全対象の現在値をmanifestと照合します。対象ごとに書込み直前にも照合し、更新後に取得して一致を確認します。WordPressに原子的なcompare-and-swapはないため、公開中は管理画面や別AIから同じ対象を編集しないでください。
 
-バックアップと実行結果はローカル `.deploy/<UTC時刻>/receipt.json` に保存されます（Git対象外）。成功後は `site/manifest.json` のハッシュが更新されます。公開URLの本文・description・canonical・リンク・コピー・検索を検証し、必要なら管理画面からキャッシュを削除して再確認。**manifestの更新をコミット・pushして初めて他のAIにも新しい公開基準が共有されます。**
+バックアップと実行結果はローカル `.deploy/<UTC時刻>/receipt.json` に保存されます（Git対象外）。成功後は `site/manifest.json` のハッシュが更新されます。公開URLの本文・description・canonical・リンク・コピー・検索を検証し、必要なら管理画面からキャッシュを削除して再確認。自動公開の最新基準はサーバーのproduction.jsonです。例外の手動公開後もこの基準との整合を確認してからcronを再開します。
 
 ## 本番との競合
 
@@ -50,4 +50,4 @@ python scripts/site_sync.py export --destination .deploy/live-review
 
 ## 範囲外
 
-新規記事作成、削除、非公開化、slug変更、分類変更、画像アップロード、メディア本体の同期、プラグイン設定、広告管理には対応しません。必要なら別の変更として実装・レビューします。GitHub Actionsの本番認証情報はproduction環境のSecretsで管理します。
+新規記事作成、削除、非公開化、slug変更、分類変更、画像アップロード、メディア本体の同期、プラグイン設定、広告管理には対応しません。必要なら別の変更として実装・レビューします。本番認証情報はサーバーの非公開領域で管理します。

@@ -31,9 +31,9 @@ Python 3.11以上を使用します。編集と検証にはWordPressの認証情
 1. AIにこのリポジトリを渡し、ブランチで本文やテーマを編集させます。
 2. ローカル検証とGitHub Actionsのチェックを通し、差分をPRでレビューします。
 3. mainへのマージ・pushで `Deploy production` が起動し、テストとPHP/JS構文検査を実行します。
-4. 検証成功後、本番との競合を確認して変更分を自動公開します。公開済み基準は `production-state` ブランチに記録します。
+4. 検証成功後、本番との競合を確認して変更分を自動公開します。ConoHaが1分ごとに検証済み更新を取得し、公開済み基準はサーバーの非公開領域に記録します。
 
-**mainへのpush・マージは本番への公開操作です。** 作業ブランチやPRでは検証のみを実行します。認証情報はmainだけが利用できるGitHub Environment `production` のSecretsに保存し、AIやGit管理ファイルには渡しません。詳しくは [自動公開の運用](docs/AUTO_DEPLOY.md) と [更新・復旧手順](docs/OPERATIONS.md)。
+**mainへのpush・マージは本番への公開操作です。** 作業ブランチやPRでは検証のみを実行します。認証情報はConoHaサーバーの非公開領域に保存し、GitHubに本番パスワードやSSH秘密鍵は置きません。詳しくは [自動公開の運用](docs/AUTO_DEPLOY.md) と [更新・復旧手順](docs/OPERATIONS.md)。
 
 AIへの依頼例：
 

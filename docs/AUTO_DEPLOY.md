@@ -1,40 +1,39 @@
 # GitHubからの自動公開
 
-所有者の依頼により2026-10-02導入。`main` へのpush/PRマージで `Deploy production` が実行されます。mainを選んだ手動のworkflow_dispatchでも再実行できます。記事・固定ページの本文/タイトル/抜粋と、登録済みテーマファイルが対象です。
+mainへのpush・マージを本番公開として扱います。作業ブランチとPRでは検証だけを実行します。
 
-## 流れ
+## 動作
 
-1. ソース検証・テスト・PHP構文・外部JS構文・追跡ファイル検査。
-2. production環境のWP_USER / WP_PASSWORDで認証。秘密情報はこのジョブだけへ渡します。
-3. `production-state:production.json` の直近成功ハッシュを使用。記事ID、slug、ファイル対応が勝手に変わった場合は停止。
-4. 更新対象すべての本番値を照合。競合がなければ変更分だけ反映し、保存内容を再取得して検証。
-5. 検証済み状態をproduction-stateへ記録。ホームと更新記事の公開HTTP応答を確認。
+1. GitHub Actionsの`Deploy production`が本文検証・単体テスト・PHP/JS構文検査・秘密情報混入チェックを実行。
+2. 合格したmainのコミットを`production-ready`ブランチへ進めます。直接このブランチを変更しないでください。
+3. ConoHaサーバーのcronが1分ごとに取得。最新mainと一致したコミットのみを処理します。
+4. ファイルロックで同時実行を防ぎ、対象別のplan、本番の競合確認、変更分の公開、読み戻し、公開HTTP確認を実施。
+5. サーバーが公開する最小限の完了情報をActionsが確認して成功します。通常は検証後数分以内。10分以内に完了確認がなければActionsは失敗します。
 
-このstateブランチは本番反映記録専用で、mainへマージしません。mainのmanifestは対象一覧として使い、古いハッシュで自動公開を判断しません。レジストリへの新規記事追加等は別途移行手順が必要です。
+WordPressとSSHの国外IP制限は維持します。PCを起動しておく必要はありません。GitHubから本番へSSH接続しません。
 
-同時実行は1件。進行中の公開は新しいpushで中断しません。待機中の古い実行が置き換わっても最新main全体と公開基準の差分を反映します。実行開始時にmainが進んでいれば旧実行は書込みをスキップします。公開中にさらにpushされた場合は次の実行が追従します。
+## 状態・認証情報
 
-## 秘密情報・権限
+サーバーのホームにある非公開ディレクトリ`~/.mitsune-deploy/`を使用します。
 
-- GitHub Environment `production` のデプロイブランチルールはbranch `main` のみ。PR/任意ブランチからの認証情報使用は許可しません。
-- Secrets: `WP_USER`、`WP_PASSWORD`。GitHubの公開鍵で暗号化して登録。ソース・ログ・成果物には含めません。
-- 検証ジョブはcontents:read。公開ジョブのみstate記録のためcontents:writeを使います。GitHubの個人トークンをActionsへ登録しません。
-- mainを書き換えられる人/AIは本番も変更できます。PRレビュー運用を守ってください。ブランチ保護の必須レビューはこの導入では追加していません。
+- `config.json`: 既存WordPress認証情報。所有者のみ読み書き可能。Git管理禁止。
+- `production.json`: 最後に本番読み戻しで確認した70対象の基準ハッシュとコミット。
+- `checkout/.deploy/*/receipt.json`: 変更前後の復旧記録。
+- `deploy.log`: 直近の実行記録。大きくなった場合は`deploy.log.previous`へローテーション。
+- `server_poll.py`: サーバーに固定配置した起動スクリプト。リポジトリで変更しても自動更新しません。運用者が差分確認後にSSHで更新します。
 
-## 成功・失敗の確認
+公開URL`/.well-known/mitsune-deployment.json`にはコミットID・確認時刻・成功状態だけを出力し、認証情報や本文は含めません。成功表示はその時点の検証を示し、その後の手動改変まで保証しません。
 
-Actionsの `Deploy production` とproduction環境の履歴を確認してください。公開データの変更前/変更後と復旧結果は `production-receipts-<run>-<attempt>` 成果物に30日保存します。秘密情報を含まない公開ソースだけが対象です。
+旧`production-state`ブランチは移行前の基準を保管するもので、今後は更新されません。最新基準はサーバーの`production.json`です。mainのmanifestのハッシュだけを使って手動公開しないでください。
 
-途中失敗時は更新内容が自分の書込みのまま残っている対象のみ自動復旧します。競合や通信障害で復旧できない場合は失敗として停止。管理画面が使えないPHP障害はホスティング/SFTPから復旧します。
+GitHub上にWordPressパスワードやSSH秘密鍵は不要です。GitHub Actionsは同じリポジトリの`production-ready`を更新する権限だけを使います。mainの編集権限を持つ人はサイトを更新できるため、PRのレビューで意図を確認してください。
 
-本番書込み成功後に公開HTTP確認が失敗しても、検証済みハッシュはstateへ記録し、ジョブは失敗のまま残します。stateのpush失敗は自動で無視しません。成果物と本番値を照合し、state記録を復旧するまで次の本番更新を停止してください。
+## 停止・復旧
 
-公開HTTPチェックはキャッシュの完全一致や全画面UIテストではありません。レイアウト・コピー・検索の変更はPR検証時に実操作し、公開後も該当箇所を確認してください。
+自動公開を止めるときはConoHaのジョブスケジューラー、または`crontab -e`で`# mitsune-github-deploy`の行を停止します。GitHub Actionsの停止だけでは、既に渡したコミットのサーバー処理は止まりません。
 
-## 取り消しと停止
+障害時はサーバーの`deploy.log`とreceiptを確認します。競合は強制上書きせず現行ソースを別フォルダへ取得して解消します。途中失敗では自分が書いた値のままの対象だけを戻し、他者の変更は保護します。公開読み戻し後にHTTP確認が失敗した場合は基準を保存し、次回はその基準で再確認します。
 
-- 内容を戻す：mainの対象ソース変更をrevertしたPRをマージ。stateのハッシュは現在の本番のままなので、戻す内容との差分が自動反映されます。
-- 自動公開の停止：GitHub Actionsで `Deploy production` workflowを無効化。WordPressやSecretsを削除する必要はありません。
-- ローカル公開は自動ジョブ停止後に限る。stateのmanifestをローカルへ取り込み、plan/deployを実施し、確認結果をstateにも同期してから自動公開を再開する。
+通常の取り消しは本文・テーマの変更をrevertするPRを作りmainへマージします。基準ハッシュを過去へ戻さないでください。手動公開はcronを停止し、最新`production.json`を使い、`plan --only KEY`から実施してください。
 
-参考：[GitHub Environments](https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/manage-environments)、[同時実行の制御](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency)。
+初回接続用SSH鍵`mitsune-deploy-setup`は運用者のPCに保管しGit管理しません。cronはこの鍵に依存せず、GitHubの公開リポジトリを読み取ります。
