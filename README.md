@@ -30,13 +30,13 @@ Python 3.11以上を使用します。編集と検証にはWordPressの認証情
 
 1. AIにこのリポジトリを渡し、ブランチで本文やテーマを編集させます。
 2. ローカル検証とGitHub Actionsのチェックを通し、差分をPRでレビューします。
-3. マージ後、認証情報を持つ運用環境で `plan` を実行し、本番との差分を確認します。
-4. `deploy --apply` で指定した変更だけを公開します。公開確認後、更新されたmanifestもコミットします。
+3. mainへのマージ・pushで `Deploy production` が起動し、テストとPHP/JS構文検査を実行します。
+4. 検証成功後、本番との競合を確認して変更分を自動公開します。公開済み基準は `production-state` ブランチに記録します。
 
-**GitHubへのpush・マージだけでは本番は変わりません。** 現状は明示的な手動デプロイです。AIへのリポジトリアクセスと、本番WordPressへのアクセスは別に管理します。詳しくは [更新・復旧手順](docs/OPERATIONS.md)。
+**mainへのpush・マージは本番への公開操作です。** 作業ブランチやPRでは検証のみを実行します。認証情報はmainだけが利用できるGitHub Environment `production` のSecretsに保存し、AIやGit管理ファイルには渡しません。詳しくは [自動公開の運用](docs/AUTO_DEPLOY.md) と [更新・復旧手順](docs/OPERATIONS.md)。
 
 AIへの依頼例：
 
-> AGENTS.mdとdocs/EDITORIAL.mdを読み、服装記事の種類別リンクを改善してください。site/posts/42-*.htmlを編集し、検証結果と差分をPRにしてください。manifestの基準ハッシュは書き換えず、本番デプロイは行わないでください。
+> AGENTS.mdとdocs/EDITORIAL.mdを読み、服装記事の種類別リンクを改善してください。site/posts/42-*.htmlを編集し、検証結果と差分をPRにしてください。manifestの基準ハッシュは書き換えず、mainへのマージはまだ行わないでください。
 
 参考仕様：[WordPress認証](https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/)、[GitHub Actions](https://docs.github.com/en/actions/get-started/quickstart)。
